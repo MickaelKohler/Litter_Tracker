@@ -10,7 +10,7 @@ services:
     build: ./api/
     restart: always
     ports:
-      - 5050:5000
+      - 80:8080
     links:
       - database
   anvilserver:
