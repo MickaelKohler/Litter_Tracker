@@ -1,0 +1,4 @@
+Pillow
+requests
+anvil-uplink
+python-dotenv

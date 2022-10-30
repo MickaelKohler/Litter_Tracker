@@ -1,0 +1,11 @@
+numpy
+pandas
+psycopg2
+Pillow
+tensorflow
+waitress
+flask
+flask_mail
+flask_bcrypt
+flask_jwt_extended
+python-dotenv
