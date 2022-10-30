@@ -9,7 +9,7 @@ import anvil.media
 
 load_dotenv()
 
-API = 'http://api:5000/'
+API = 'http://api:8080/'
 ANVIL_SERVER = os.getenv('ANVIL_SERVER')
 anvil.server.connect(ANVIL_SERVER)
 

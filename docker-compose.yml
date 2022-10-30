@@ -4,13 +4,14 @@ services:
     container_name: database
     build: ./database/
 #    ports:
-#      - 6060:5432
+#      - 5432:5432
   api:
     container_name: api
     build: ./api/
     restart: always
     ports:
       - 80:8080
+      - 432:8080
     links:
       - database
   anvilserver:
