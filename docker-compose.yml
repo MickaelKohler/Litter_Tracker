@@ -9,9 +9,11 @@ services:
     container_name: api
     build: ./api/
     restart: always
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
     ports:
-      - 80:8080
-      - 443:8080
+#      - 80:8080
+      - 443:5000
     links:
       - database
   anvilserver:

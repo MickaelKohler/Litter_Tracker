@@ -8,4 +8,6 @@ flask
 flask_mail
 flask_bcrypt
 flask_jwt_extended
+flask_talisman
 python-dotenv
+gunicorn

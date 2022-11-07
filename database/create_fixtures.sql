@@ -62,11 +62,11 @@ CREATE TABLE IF NOT EXISTS lt_subscribe (
 	PRIMARY KEY(sub_mail)
 );
 
-CREATE TABLE IF NOT EXISTS lt_blacklist (
-	black_id SERIAL NOT NULL,
-	black_token VARCHAR(50) NOT NULL,
-	black_datetime TIMESTAMP NOT NULL,
-	PRIMARY KEY(black_id)
+CREATE TABLE IF NOT EXISTS lt_blocklist (
+	block_id SERIAL NOT NULL,
+	block_token VARCHAR(50) NOT NULL,
+	block_datetime TIMESTAMP NOT NULL,
+	PRIMARY KEY(block_id)
 );
 
 INSERT INTO lt_type (type_id, type_name, type_img)

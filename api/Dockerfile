@@ -18,4 +18,8 @@ ENV DB_USER="docker"
 
 ENV DB_PWD="docker"
 
-CMD python ./api/litrack_api.py
+EXPOSE 5000
+
+#CMD python ./api/litrack_api.py
+
+CMD ["python3", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--certfile", "/etc/letsencrypt/live/horoscope.wesselhuising.nl/fullchain.pem", "--keyfile", "/etc/letsencrypt/live/horoscope.wesselhuising.nl/privkey.pem", "litrack_api:app”]

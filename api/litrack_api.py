@@ -15,6 +15,7 @@ from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, verify_jwt_in_request, get_jwt, get_jwt_identity
+from flask_talisman import Talisman
 from waitress import serve
 from dotenv import load_dotenv
 
@@ -34,6 +35,7 @@ DB_PWD = os.getenv('DB_PWD')
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
+Talisman(app, content_security_policy=None)
 
 
 # ======================= #
@@ -269,7 +271,7 @@ def is_sub(email):
     return not not db_connect(sql, (email,), output=True)
     
 # model
-model = tf.keras.models.load_model('./api/prod_model.h5')
+model = tf.keras.models.load_model('./model/prod_model.h5')
 
 def ml_get_class(data):
     """
@@ -317,7 +319,7 @@ def recup_required(locations):
 
 def revoke_token(jti_token):
     """
-    Add the jti's token in LT_BLACKLIST table
+    Add the jti's token in LT_BLOCKLIST table
 
     Parameters
     ----------
@@ -329,14 +331,14 @@ def revoke_token(jti_token):
     None
 
     """
-    sql="""INSERT INTO lt_blacklist(black_token, black_datetime)
+    sql="""INSERT INTO lt_blocklist(block_token, block_datetime)
            VALUES(%s, NOW());"""
     db_connect(sql, (jti_token,), output=False)   
 
 @jwt.token_in_blocklist_loader
 def check_if_token_is_revoked(jwt_header, jwt_payload: dict) -> bool:
     """
-    Add the jti's token in LT_BLACKLIST table
+    Add the jti's token in LT_BLOCKLIST table
 
     Parameters
     ----------
@@ -345,21 +347,20 @@ def check_if_token_is_revoked(jwt_header, jwt_payload: dict) -> bool:
 
     Returns
     -------
-    Boolean. True if the token blacklisted, False otherwise.
+    Boolean. True if the token blocklisted, False otherwise.
 
     """
     sql="""
         SELECT 
-            black_id
+            block_id
         FROM 
-            lt_blacklist
+            lt_blocklist
         WHERE
-            black_token = %s
+            block_token = %s
         """
     jti = jwt_payload["jti"]
     token = not db_connect(sql, (jti,), output=True)
     return not token
-
 
 @app.route('/v1/register', methods=['POST'])
 def register():
@@ -716,7 +717,7 @@ def subscription_state():
     if is_sub(email):
         return jsonify(status='success', msg='User has subscribed'), 200
     else:
-        return jsonify(status='success', msg='User has not subscribed '), 200
+        return jsonify(status='success', msg='User has not subscribed'), 200
 
 
 # ================= #
@@ -832,7 +833,7 @@ def message_hist():
     try:
         nb_messages = int(request.args.get('limit')) if request.args.get('limit') is not None else 100
     except Exception:
-        return jsonify(status='fail', msg="Parameter 'nb_img' must be an Integer"), 400
+        return jsonify(status='fail', msg="Parameter 'limit' must be an Integer"), 400
     # optional parameter : all 
     if request.args.get('all') is None:
         all_msg = False
@@ -1013,5 +1014,5 @@ def del_subscription():
 # ============ #
 
 if __name__ == "__main__":
-    # app.run(debug=True, ssl_context='adhoc')
-    serve(app, host="0.0.0.0", port=8080)
+    app.run(debug=False)
+    # serve(app, host="0.0.0.0", port=8080)
