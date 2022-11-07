@@ -1,6 +1,8 @@
 FROM python:3.9.5
 
-COPY . /api
+COPY litrack_api.py /api
+
+COPY prod_model.h5 /model
 
 COPY requirements.txt requirements.txt
 
