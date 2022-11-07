@@ -10,6 +10,8 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r /requirements.txt
 
+WORKDIR /app
+
 ENV PYTHONUNBUFFERED=1
 
 ENV JWT_SECRET_KEY="super-secret"
@@ -26,4 +28,4 @@ EXPOSE 5000
 
 #CMD python ./api/litrack_api.py
 
-CMD ["python3", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--certfile", "/etc/letsencrypt/live/litter-tracker.eu/fullchain.pem", "--keyfile", "/etc/letsencrypt/live/litter-tracker.eu/privkey.pem", "api.litrack_api:app"]
+CMD ["python3", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--certfile", "/etc/letsencrypt/live/litter-tracker.eu/fullchain.pem", "--keyfile", "/etc/letsencrypt/live/litter-tracker.eu/privkey.pem", "litrack_api:app"]
