@@ -2,6 +2,8 @@ FROM python:3.9.5
 
 COPY litrack_api.py /api
 
+COPY __init__.py /api
+
 COPY prod_model.h5 /model
 
 COPY requirements.txt requirements.txt
@@ -24,4 +26,4 @@ EXPOSE 5000
 
 #CMD python ./api/litrack_api.py
 
-CMD ["python3", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--certfile", "/etc/letsencrypt/live/litter-tracker.eu/fullchain.pem", "--keyfile", "/etc/letsencrypt/live/litter-tracker.eu/privkey.pem", "litrack_api:app"]
+CMD ["python3", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "--certfile", "/etc/letsencrypt/live/litter-tracker.eu/fullchain.pem", "--keyfile", "/etc/letsencrypt/live/litter-tracker.eu/privkey.pem", "api.litrack_api:app"]
