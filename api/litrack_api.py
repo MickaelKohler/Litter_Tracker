@@ -1015,4 +1015,4 @@ def del_subscription():
 
 if __name__ == "__main__":
     app.run(debug=False)
-    # serve(app, host="0.0.0.0", port=8080)
+    # serve(app, host="0.0.0.0", port=8080, url_scheme="https")
