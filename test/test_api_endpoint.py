@@ -19,7 +19,6 @@ def db_connect(sql_querie, variable=(None, ), output=True):
         An SQL query
     variable: tuple of str, optional
         tuple with all variables that will be added in the query 
-        exemple: ['.jpg', '.png']
     output: bool, optional
         True if the query returns a value, False otherwise
 
@@ -53,6 +52,7 @@ def client():
 def admin_login(client):
     payload = {'email':'admin.test@address.com', 'password':'Admin!1337'}
     response = client.get("/v1/login", data=payload)
+    print(response.data)
     data = json.loads(response.data.decode())
     return data['data']['access_token']
 
@@ -77,6 +77,7 @@ def admin_login(client):
 
 def test_check_api(client):
     response = client.get("/")
+    print(response.data)
     assert response.status_code == 418
 
 def test_message_hist(client, admin_login):

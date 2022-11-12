@@ -1,8 +1,6 @@
 FROM python:3.9.5
 
-COPY litrack_api.py /api
-
-COPY prod_model.h5 /model
+COPY . /api
 
 COPY requirements.txt requirements.txt
 
@@ -19,3 +17,5 @@ ENV MAIL_PASSWORD="derswvpaomaxnfyy"
 ENV DB_USER="docker"
 
 ENV DB_PWD="docker"
+
+CMD python ./api/litrack_api.py

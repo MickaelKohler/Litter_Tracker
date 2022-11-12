@@ -15,7 +15,6 @@ from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, verify_jwt_in_request, get_jwt, get_jwt_identity
-from flask_talisman import Talisman
 from waitress import serve
 from dotenv import load_dotenv
 
@@ -35,7 +34,6 @@ DB_PWD = os.getenv('DB_PWD')
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
-Talisman(app, content_security_policy=None)
 
 
 # ======================= #
@@ -270,7 +268,7 @@ def is_sub(email):
     return not not db_connect(sql, (email,), output=True)
     
 # model
-model = tf.keras.models.load_model('./model/prod_model.h5')
+model = tf.keras.models.load_model('./api/prod_model.h5')
 
 def ml_get_class(data):
     """

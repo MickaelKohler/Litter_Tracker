@@ -13,7 +13,6 @@ def db_connect(sql_querie, variable=(None, ), output=True):
         An SQL query
     variable: tuple of str, optional
         tuple with all variables that will be added in the query 
-        exemple: ['.jpg', '.png']
     output: bool, optional
         True if the query returns a value, False otherwise
 
@@ -35,12 +34,12 @@ lta.db_connect = db_connect
 
 class TestUnitaires(unittest.TestCase):
     def test_email_valid(self):
-        self.assertTrue(lta.email_valid(self.mail))
+        self.assertTrue(lta.email_valid('test@address.com'))
         self.assertFalse(lta.email_valid('Bonjour'))
         self.assertFalse(lta.email_valid('unit.test@gmail.com ; DROP TABLE'))
 
     def test_password(self):
-        self.assertTrue(lta.pwd_valid(self.pwd))
+        self.assertTrue(lta.pwd_valid('SuperPwd!1234'))
         self.assertFalse(lta.pwd_valid('SuperPwd1234'))
         self.assertFalse(lta.pwd_valid('SuperPwd!'))
         self.assertFalse(lta.pwd_valid('superpwd!1234'))
