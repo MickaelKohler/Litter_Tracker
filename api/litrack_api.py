@@ -435,7 +435,7 @@ def forgot_password():
             <p>Dear User</p>
             <p>
                 To reset your password
-                <a href="http://localhost:5050/v1/password/reset?jwt={reset_token}">click here</a>.
+                <a href="http://litter-tracker.eu/v1/password/reset?jwt={reset_token}">click here</a>.
             </p>
             <p>If you have not requested a password reset simply ignore this message.</p>
             <p>Sincerely</p>
