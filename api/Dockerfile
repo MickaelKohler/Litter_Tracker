@@ -19,5 +19,3 @@ ENV MAIL_PASSWORD="derswvpaomaxnfyy"
 ENV DB_USER="docker"
 
 ENV DB_PWD="docker"
-
-CMD python ./api/litrack_api.py
