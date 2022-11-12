@@ -3,8 +3,6 @@ services:
   database:
     container_name: database
     build: ./database/
-#    ports:
-#      - 5432:5432
   api:
     container_name: api
     build: ./api/
@@ -12,8 +10,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
     ports:
-#      - 80:8080
-      - 443:5000
+      - 80:8080
     links:
       - database
   anvilserver:
