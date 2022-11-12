@@ -301,19 +301,6 @@ def admin_required():
         return decorator
     return wrapper
 
-def recup_required(locations):
-    def wrapper(fn):
-        @wraps(fn)
-        def decorator(*args, **kwargs):
-            verify_jwt_in_request(locations)
-            claims = get_jwt()
-            if claims["recup"]:
-                return fn(*args, **kwargs)
-            else:
-                return jsonify(status='fail', msg="Invalid Token"), 403
-        return decorator
-    return wrapper
-
 def revoke_token(jti_token):
     """
     Add the jti's token in LT_BLOCKLIST table
@@ -451,7 +438,7 @@ def forgot_password():
     return jsonify(status='fail', msg='User does not exist'), 400 
 
 @app.route('/v1/password/reset', methods=["GET", "POST"])
-@recup_required(locations=["headers", "query_string", "json"])
+@jwt_required(locations=["headers", "query_string", "json"])
 def reset_password():
     """
     When the request method is GET, display a form to put a new password.
