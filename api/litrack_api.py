@@ -52,7 +52,6 @@ def db_connect(sql_querie, variable=(None, ), output=True):
         An SQL query
     variable: tuple of str, optional
         tuple with all variables that will be added in the query 
-        exemple: ['.jpg', '.png']
     output: bool, optional
         True if the query returns a value, False otherwise
 
