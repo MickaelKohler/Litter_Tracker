@@ -32,31 +32,54 @@ def db_connect(sql_querie, variable=(None, ), output=True):
 # override db_connect to use test database
 lta.db_connect = db_connect
 
-class TestUnitaires(unittest.TestCase):
+
+class TestLocalFonctions(unittest.TestCase):
+    """
+    Unit testing method in the API
+    """
     def test_email_valid(self):
+        """
+        Check if the email_valid() identify an email
+        """
         self.assertTrue(lta.email_valid('test@address.com'))
         self.assertFalse(lta.email_valid('Bonjour'))
         self.assertFalse(lta.email_valid('unit.test@gmail.com ; DROP TABLE'))
 
     def test_password(self):
+        """
+        Check it pwd_valid() can identify weak passwords
+        """
         self.assertTrue(lta.pwd_valid('SuperPwd!1234'))
         self.assertFalse(lta.pwd_valid('SuperPwd1234'))
         self.assertFalse(lta.pwd_valid('SuperPwd!'))
         self.assertFalse(lta.pwd_valid('superpwd!1234'))
         self.assertFalse(lta.pwd_valid('test'))
 
-class TestLocalFonctions(unittest.TestCase):
+
+class TestUserStory(unittest.TestCase):
+    """
+    Integration tests about the User.
+    Initialize a User then add, modify and delete the user account.
+    """
     def __init__(self, *args, **kwargs):
-        super(TestLocalFonctions, self).__init__(*args, **kwargs)
+        """
+        Initialize a fictional user
+        """
+        super(TestUserStory, self).__init__(*args, **kwargs)
         self.mail = 'test@address.com'
         self.name = 'test_user'
         self.pwd = 'SuperPwd!1234'
         self.admin = False
     
-    def test_user_fonctions(self):
+    def test_user_account(self):
+        """
+        Apply the User Story : 
+            - create a user account,
+            - modify email, password, and name,
+            - delete the account.
+        """
         #test add_user
         lta.add_user(self.mail, self.name, self.pwd, self.admin)
-
         user_id = db_connect("SELECT user_id FROM lt_user WHERE user_mail = 'test@address.com'")[0][0]
         user_name = db_connect(f"SELECT user_name FROM lt_user WHERE user_id = {user_id}")[0][0]
         user_admin = db_connect(f"SELECT user_admin FROM lt_user WHERE user_id = {user_id}")[0][0]
@@ -95,18 +118,31 @@ class TestLocalFonctions(unittest.TestCase):
         self.assertListEqual(db_connect(f"SELECT user_name FROM lt_user WHERE user_id = {user_id}"), [])
 
     def test_is_sub(self):
+        """
+        Check if the fictional has subscribed to the Newsletter
+        """
         self.assertTrue(lta.is_sub(self.mail))
         self.assertFalse(lta.is_sub('fake@address.com'))
 
+class TestLocalFonctions(unittest.TestCase):
+    """
+    Integration tests about the Classification model.
+    """
     def test_class_decrypt(self):
+        """
+        Test if the class_decrypt() find the good classe with the type_id
+        """
         self.assertEqual(lta.class_decrypt(0)[0], 'cardboard')
         self.assertEqual(lta.class_decrypt(1)[0], 'e-waste')
         self.assertNotEqual(lta.class_decrypt(2)[0], 'medical')
 
     def test_add_classif(self):
-        # ajout d'un élément
-        # vérifier le time limite
-        # vérifier si la classid_unknow
+        """
+        Apply the User Story : 
+            - Add a classification,
+            - change the classification,
+            - delete the classification.
+        """
         pass
 
 if __name__ == '__main__':

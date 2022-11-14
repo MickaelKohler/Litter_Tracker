@@ -40,6 +40,7 @@ lta.db_connect = db_connect
 
 @pytest.fixture
 def client():
+    """REST API client"""
     app = lta.app
     app.config.update({
         "TESTING": True,
@@ -50,9 +51,9 @@ def client():
 
 @pytest.fixture
 def admin_login(client):
+    """Creation of a Admin Token"""
     payload = {'email':'admin.test@address.com', 'password':'Admin!1337'}
     response = client.get("/v1/login", data=payload)
-    print(response.data)
     data = json.loads(response.data.decode())
     return data['data']['access_token']
 
@@ -61,14 +62,15 @@ def admin_login(client):
 # === AUTHENTICATION === # 
 # ====================== #
 
-#def test_register(client):
-#    payload = {
-#        'email':'admin.test@address.com', 
-#        'name':'admin', 
-#        'password':'Admin!1337'}
-#    response = client.post("/v1/register", data=payload)
-#    assert response.status_code == 201
-
+"""
+def test_register(client):
+    payload = {
+        'email':'admin.test@address.com', 
+        'name':'admin', 
+        'password':'Admin!1337'}
+    response = client.post("/v1/register", data=payload)
+    assert response.status_code == 201
+"""
 
 
 # ================= #
@@ -76,14 +78,19 @@ def admin_login(client):
 # ================= #
 
 def test_check_api(client):
+    """Test the check_api endpoint"""
     response = client.get("/")
     print(response.data)
     assert response.status_code == 418
 
 def test_message_hist(client, admin_login):
+    """
+    Test if the Admin can read all messages
+    Second Part of a User Story : Send, read and delate a message
+    """
+    # right access to the data
     headers = {'Authorization': f'Bearer {admin_login}'}
     response = client.get("/v1/admin/message?limit=10", headers=headers)
-    print(response.data)
     data = json.loads(response.data.decode())
     assert response.status_code == 200
     assert len(data['data']) < 11
@@ -106,6 +113,11 @@ def test_message_hist(client, admin_login):
 # =============== #
 
 def test_add_message(client):
+    """
+    Test if a User can add a message
+    First Part of a User Story : Send, read and delate a message
+    """
+    # right access to the data
     payload = {
         'email':'msg.test@address.com', 
         'name':'add_test', 
@@ -130,6 +142,11 @@ def test_add_message(client):
     assert 'Message Required (name, email, and text)' in data['msg']
 
 def test_del_message(client, admin_login):
+    """
+    Test if the Admin can delete a message
+    Third Part of a User Story : Send, read and delate a message
+    """
+    # right access to the data
     msg_id = db_connect("SELECT msg_id FROM lt_message ORDER BY msg_datetime DESC LIMIT 1")[0][0]
     headers = {'Authorization': f'Bearer {admin_login}'}
     response = client.delete(f"/v1/admin/message?msg_id={msg_id}", headers=headers)
@@ -148,6 +165,11 @@ def test_del_message(client, admin_login):
     assert "Parameter 'msg_id' is Required" in data['msg']
 
 def test_add_subscription(client):
+    """
+    Test if an User can subscribe to the Newsletter
+    First Part of a User Story : add and delete the Newsletter Subscription
+    """
+    # right access subscription endpoint
     payload = {'email':'sub.test@address.com'}
     response = client.post("/v1/subscribe", data=payload)
     assert response.status_code == 201
@@ -170,6 +192,11 @@ def test_add_subscription(client):
     assert "Parameter 'email' is Required" in data['msg']
 
 def test_del_subscription(client):
+    """
+    Test if an User can unsubscribe to the Newsletter
+    Second Part of a User Story : add and delete the Newsletter Subscription
+    """
+    # right access subscription endpoint
     payload = {'email':'sub.test@address.com'}
     response = client.delete("/v1/subscribe", data=payload)
     assert response.status_code == 200
@@ -193,10 +220,16 @@ def test_del_subscription(client):
     assert "Parameter 'email' is Required" in data['msg']
 
 def test_subscription_state(client, admin_login):
+    """
+    Test the check subscription endpoint
+    Third Part of a User Story : add and delete the Newsletter Subscription
+    """
+    # right access subscription endpoint
     headers = {'Authorization': f'Bearer {admin_login}'}
     response = client.get("/v1/user/subscription", headers=headers)
     data = json.loads(response.data.decode())
     assert response.status_code == 200
     assert "User has subscribed" in data['msg']
+
 
 # pytest to lunch all tests

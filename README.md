@@ -20,7 +20,7 @@ Le projet a été développé dans le cadre du passage de la Certification Déve
 
 Les différents fichiers sont Open Source et peuvent être montés dans un *conteneur Docker*. 
 
-Pour donner un exemple d'utilisation de l'API, une WebApp a été développée avec le framework Anvil pour permettre à tout utilisateur t'interagir facilement avec l'API et la base de données. 
+Pour donner un exemple d'utilisation de l'API, une WebApp a été développée avec le framework Anvil[^1] pour permettre à tout utilisateur t'interagir facilement avec l'API et la base de données. 
 
 ## Technologies 
 
@@ -32,13 +32,20 @@ La base de données est construite sur la base du système de gestion de base de
 
 ## Deploiment 
 
+*Pré-requis* : 
+1. Modifier les variables d'environnement pour configurer l'accès au serveur SMTP et la clée secrête JSON Web Token. 
+2. Modifier l'adresse d'accès de l'API dans le token du mail de récupération de mot de passes.
+3. Avoir Docker et Docker-compose installé dans l'environnement. 
+
 Pour déployer l'API télécharger l'ensemble des fichiers et dans le dossier racine et exécutez les commandes docker suivantes : 
 ```
 docker-compose build
 docker-compose up
 ```
-Trois conteneurs seront créés et assemblés pour lancée l'API et la base de données (ainsi que le back-end de l'application Anvil)
+Trois conteneurs seront créés et assemblés pour lancée l'API et la base de données, ainsi que le back-end de l'application Anvil.
 
 ## Statut
 
 La version 1 a été rendue disponible le 14/11/2022
+
+[^1]: https://anvil.works/
