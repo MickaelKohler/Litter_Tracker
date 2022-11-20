@@ -8,11 +8,11 @@ RUN pip install -r /requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
-ENV JWT_SECRET_KEY="super-secret"
+ENV JWT_SECRET_KEY="SECRET PASSWORD TO MODIFY"
 
 ENV MAIL_USERNAME="litter.tracker.project@gmail.com"
 
-ENV MAIL_PASSWORD="derswvpaomaxnfyy"
+ENV MAIL_PASSWORD="GMAIL TOKEN TO MODIFY"
 
 ENV DB_USER="docker"
 
